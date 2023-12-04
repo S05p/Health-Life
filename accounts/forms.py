@@ -138,7 +138,7 @@ class CustomUserChangeForm(UserChangeForm):
     nickname = forms.CharField(
         label_suffix='', label='',
         error_messages={'required': '닉네임을 확인해주세요'},
-        widget=forms.Textarea(
+        widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
             }
@@ -147,6 +147,7 @@ class CustomUserChangeForm(UserChangeForm):
     profile_image = forms.ImageField(
         label_suffix='', label='',
         error_messages={'required': '이미지를 확인해주세요'},
+        required=False,
         widget=ClearableFileInput(
             attrs={
                 'class': 'form-control',
@@ -157,9 +158,10 @@ class CustomUserChangeForm(UserChangeForm):
         label_suffix='', label='',
         error_messages={'required': '취미를 확인해주세요'},
         choices=Hobbiy_Choices,
+        required=False,
         widget=forms.CheckboxSelectMultiple(
         ),
     )
     class Meta:
         model = get_user_model()
-        fields = ('nickname', 'profile_image', 'hobbies', 'email',)
+        fields = ('nickname', 'profile_image', 'hobbies',)

@@ -6,6 +6,10 @@
 
  <p> {{ user.nickname }}</p>
 
- <p> {{ user.</p>
+ <p> {{ user.invited_Day}} </p>
+
+ <p> {{ user.email }} </p>
+
+<a href="{% url 'accounts:update' user.pk %}?next={% url 'articles:index' %}">유저 정보 수정</a>
 
 {% endblock content %}
