@@ -5,12 +5,12 @@ from django.db import models
 
 class User(AbstractUser):
     Hobbiy_Choices = [
-        ('big three exercises ','3대운동'),
-        ('cycling','싸이클'),
+        ('big three exercises ', '3대운동'),
+        ('cycling', '싸이클'),
         ('bodyWeight_training', '맨몸운동'),
-        ('bodybilding','보디빌딩'),
-        ('jogging','조깅'),
-        ('running','러닝'),
+        ('bodybilding', '보디빌딩'),
+        ('jogging', '조깅'),
+        ('running', '러닝'),
         ('swimming', '수영'),
         ('WeightTraining', '웨이트트레이닝'),
         ('Yoga', '요가'),
@@ -23,7 +23,7 @@ class User(AbstractUser):
     level = models.IntegerField(default=0)
     # 이름,닉네임,레벨... 말고 또 뭐가 있지
     invited_Day = models.DateField(auto_now_add=True)
-    profile_image = models.ImageField(upload_to='user/images/%Y/%m/%d',blank=True)
+    profile_image = models.ImageField(upload_to='user/images/%Y/%m/%d',blank=True,null=True)
     hobbies = models.CharField(max_length=20,choices=Hobbiy_Choices,blank=True,null=True,verbose_name='취미')
     email = models.EmailField(blank=False,null=False,unique=True)
 
