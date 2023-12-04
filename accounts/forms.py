@@ -10,6 +10,7 @@ class CustomUserCreationForm(UserCreationForm):
         widget= forms.TextInput(
             attrs = {
                 'class':'form-control',
+                'placeholder':'성함을 입력해주세요'
             }
         )
     )
@@ -19,6 +20,7 @@ class CustomUserCreationForm(UserCreationForm):
         widget = forms.TextInput(
             attrs= {
                 'class':'form-control',
+                'placeholder': '닉네임을 입력해주세요'
             }
         )
     )
@@ -41,6 +43,7 @@ class CustomUserCreationForm(UserCreationForm):
         widget = forms.EmailInput(
             attrs = {
                 'class':'form-control',
+                'placeholder': '이메일을 입력해주세요'
             }
         )
     )
