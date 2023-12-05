@@ -91,7 +91,7 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ('username','nickname','profile_image','hobbies','email',)
 
 class CustomPasswordChangeForm(PasswordChangeForm):
-    password1 = forms.CharField(
+    old_password = forms.CharField(
         label_suffix='', label='',
         error_messages={'required': '비밀번호를 확인해주세요'},
         widget=forms.PasswordInput(
@@ -101,7 +101,17 @@ class CustomPasswordChangeForm(PasswordChangeForm):
             }
         )
     )
-    password2 = forms.CharField(
+    new_password1 = forms.CharField(
+        label_suffix='', label='',
+        error_messages={'required': '비밀번호를 확인해주세요'},
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': '비밀번호',
+            }
+        )
+    )
+    new_password2 = forms.CharField(
         label_suffix='', label='',
         error_messages={'required': '비밀번호 재확인을 확인해주세요'},
         widget=forms.PasswordInput(
@@ -116,9 +126,29 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         fields = ('password1','password2',)
 
 class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.EmailField(
+        label_suffix='', label='',
+        error_messages={'required': '이메일을 확인해주세요'},
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': '이메일'
+            }
+        )
+    )
+    password = forms.CharField(
+        label_suffix='', label='',
+        error_messages={'required': '비밀번호를 확인해주세요'},
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': '비밀번호',
+            }
+        )
+    )
     class Meta:
-        model = get_user_model()
-        fields = '__all__'
+        models = get_user_model()
+        fields = ('username','password',)
 
 class CustomUserChangeForm(UserChangeForm):
     Hobbiy_Choices = (
@@ -165,3 +195,5 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = get_user_model()
         fields = ('nickname', 'profile_image', 'hobbies',)
+
+    password = forms.CharField(label='', widget=forms.HiddenInput(), required=False)

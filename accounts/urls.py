@@ -7,5 +7,6 @@ urlpatterns = [
     path('join/',views.join,name='join'),
     path('update/<int:pk>',views.update,name='update'),
     path('login/',views.login,name='login'),
-    # path('logout/',views.logout,name='logout')
+    path('logout/',views.logout,name='logout'),
+    path('password_change/<int:pk>',views.password_change,name='password_change')
 ]
