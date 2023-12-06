@@ -1,11 +1,13 @@
+from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.fields import RichTextUploadingField
 from django import forms
 from django.forms import ClearableFileInput
 from .models import Articles, Comment
 
 class ArticlesForm(forms.Form):
-    content = forms.CharField(
+    title = forms.CharField(
         label_suffix='',label='',
-        widget=forms.Textarea(
+        widget= forms.TextInput(
             attrs={
                 'class':'form-control',
             }
@@ -13,15 +15,24 @@ class ArticlesForm(forms.Form):
     )
     image = forms.ImageField(
         label_suffix='',label='',
+        required=False,
         widget=ClearableFileInput(
             attrs={
                 'class': 'form-control',
             }
         )
     )
+    content = forms.CharField(
+        label_suffix='',label='',
+        widget=CKEditorWidget(
+            attrs={
+                'class':'form-control',
+            }
+        )
+    )
     class Meta:
         model = Articles
-        fields = ('content','image',)
+        fields = ('title','content','image',)
 
 class CommentForm(forms.Form):
     content = forms.CharField(

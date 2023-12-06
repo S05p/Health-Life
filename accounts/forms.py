@@ -93,31 +93,31 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(
         label_suffix='', label='',
-        error_messages={'required': '비밀번호를 확인해주세요'},
+        error_messages={'required': '이전 비밀번호를 확인해주세요'},
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '비밀번호',
+                'placeholder': '이전 비밀번호',
             }
         )
     )
     new_password1 = forms.CharField(
         label_suffix='', label='',
-        error_messages={'required': '비밀번호를 확인해주세요'},
+        error_messages={'required': '새로운 비밀번호를 확인해주세요'},
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '비밀번호',
+                'placeholder': '새로운 비밀번호',
             }
         )
     )
     new_password2 = forms.CharField(
         label_suffix='', label='',
-        error_messages={'required': '비밀번호 재확인을 확인해주세요'},
+        error_messages={'required': '새로운 비밀번호 재확인을 확인해주세요'},
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': '비밀번호 재확인',
+                'placeholder': '새로운 비밀번호 재확인',
             }
         )
     )

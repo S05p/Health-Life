@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% for article in articles %}
 
+        {{ article.title }}
+
+    {% endfor %}
+    <a href="{% url 'articles:create' %}">글쓰기</a>
 {% endblock content %}
