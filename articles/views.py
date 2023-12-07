@@ -46,11 +46,20 @@ def detail(request,pk):
 def article_like(request,article_pk):
     article = get_object_or_404(Articles,pk=article_pk)
     if article.User == request.user:
-        messages.error(request,'자신의 글은 추천할 수 없습니다')
+        messages.error(request,'자신의 글은 추천 할 수 없습니다')
+    if article.like_user.filter(pk=request.user.pk).exists() or article.unlike_user.filter(pk=request.user.pk).exists():
         return redirect('articles:detail',article_pk)
-    if article.like_user.filter(pk=request.user.pk).exists():
-        article.like_user.remove(request.user)
     else:
         article.like_user.add(request.user)
     return redirect('articles:detail', article_pk)
 
+@login_required
+def article_unlike(request,article_pk):
+    article = get_object_or_404(Articles,pk=article_pk)
+    if article.User == request.user:
+        messages.error(request,'자신의 글은 비추천 할 수 없습니다.')
+    if article.like_user.filter(pk=request.user.pk).exists() or article.unlike_user.filter(pk=request.user.pk).exists():
+        return redirect('articles:detail', article_pk)
+    else:
+        article.unlike_user.add(request.user)
+    return redirect('articles:detail',article_pk)

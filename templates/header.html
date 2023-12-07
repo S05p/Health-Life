@@ -1,18 +1,33 @@
-
-<div style="display:flex; flex-direction:row; justify-content:space-between;align-items:center;">
-  <div>
-    <h2><a style="text-decoration: none; color: green;" href="{% url 'articles:index' %}">Health Life</a></h2>
+<div>
+  <div style="display:flex; flex-direction:row; justify-content:space-between;align-items:center;">
+    <div>
+      <h2><a style="text-decoration: none; color: green;" href="{% url 'articles:index' %}">Health Life</a></h2>
+    </div>
+    <div>
+      <h4>
+        {% if not user.is_authenticated %}
+          <a href="{%url 'accounts:join'%}">회원가입</a>
+          <a href="{% url 'accounts:login' %}">로그인</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <a href="{% url 'accounts:user_info' user.pk %}">나의 프로필</a>
+        <a href="{% url 'accounts:logout' %}">로그아웃</a>
+        {% endif %}
+      </h4>
+    </div>
   </div>
   <div>
-    <h4>
-      {% if not user.is_authenticated %}
-        <a href="{%url 'accounts:join'%}">회원가입</a>
-        <a href="{% url 'accounts:login' %}">로그인</a>
-      {% endif %}
-      {% if user.is_authenticated %}
-      <a href="{% url 'accounts:user_info' user.pk %}">나의 프로필</a>
-      <a href="{% url 'accounts:logout' %}">로그아웃</a>
-      {% endif %}
-    </h4>
+    <div style="display:flex; flex-direction:row; align-items:center; justify-content:space-between;">
+      <h4>3대운동</h4>
+      <h4>린매스업</h4>
+      <h4>유산소</h4>
+      <h4>보디빌딩</h4>
+      <h4>식단</h4>
+      <h4>자유게시판</h4>
+      <div onclick="location.href='{% url 'articles:create' %}';"style="margin-bottom:7px" class="material-symbols-outlined">
+        edit_square
+      </div>
+
+    </div>
   </div>
 </div>

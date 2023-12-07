@@ -6,14 +6,15 @@
   {{ article.title }}
   {{ article.content }}
   {{ article.upload_time }}
-  {{ article.like_user.all|length }} 명이 이 글을 좋아합니다.
+  {{ article.like_user.all|length }} 명이 이 글을 추천합니다..
+  {{ article.unlike_user.all|length }} 명이 이 글을 비추천합니다.
 <form action="{% url 'articles:article_like' article.pk %}" method="POST">
   {% csrf_token %}
-  {% if user in article.like_user.all %}
-  <input type="submit" value="좋아요 취소">
-  {% else %}
-  <input type="submit" value="좋아요">
-  {% endif %}
+  <input type="submit" value="추천">
+</form>
+<form action="{% url 'articles:article_unlike' article.pk %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="비추천">
 </form>
 
 {% endblock content %}
