@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ArticlesForm
-from .models import Articles
+from .forms import *
+from .models import *
 from datetime import datetime
 from django.contrib import messages
 # Create your views here.
@@ -21,11 +21,14 @@ def create(request):
             title = form.cleaned_data['title']
             content = form.cleaned_data['content']
             upload_time = datetime.now()
+            category = form.cleaned_data['category']
+            category_instance = Category.objects.get(name=category)
             article = Articles.objects.create(
                 User = request.user,
                 title = title,
                 content= content,
                 upload_time = upload_time,
+                category = category_instance
             )
             return redirect('articles:detail',article.pk)
     else:
@@ -63,3 +66,13 @@ def article_unlike(request,article_pk):
     else:
         article.unlike_user.add(request.user)
     return redirect('articles:detail',article_pk)
+
+def category(request,category_name):
+    category_name = category_name.replace('-','')
+    category = get_object_or_404(Category,name=category_name)
+    articles = Articles.objects.filter(category=category)
+    context = {
+        'category':category,
+        'articles':articles,
+    }
+    return render(request,'articles/category.html',context)

@@ -2,17 +2,25 @@ from ckeditor.widgets import CKEditorWidget
 from ckeditor_uploader.fields import RichTextUploadingField
 from django import forms
 from django.forms import ClearableFileInput
-from .models import Articles, Comment
+from .models import *
 
 class ArticlesForm(forms.Form):
     Category_Choices = [
-        ('big three exercises ', '3대운동'),
-        ('Lean Mass Up', '린매스업'),
-        ('cardio', '유산'),
-        ('bodybilding', '보디빌딩'),
-        ('diet', '식단'),
-        ('freedom', '자유'),
+        ('3대운동','3대운동'),
+        ('린매스업', '린매스업'),
+        ('유산소운동', '유산소운동'),
+        ('보디빌딩', '보디빌딩'),
+        ('자유', '자유'),
     ]
+    category = forms.CharField(
+        label_suffix='', label='',
+        widget=forms.Select(
+            choices=Category_Choices,
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
     title = forms.CharField(
         label_suffix='',label='',
         widget= forms.TextInput(
@@ -30,18 +38,9 @@ class ArticlesForm(forms.Form):
             }
         )
     )
-    content = forms.ChoiceField(
+    content = forms.CharField(
         label_suffix='',label='',
         widget=CKEditorWidget(
-            attrs={
-                'class':'form-control',
-            }
-        )
-    )
-    category = forms.CharField(
-        label_suffix='',label='',
-        widget = forms.Select(
-            choices=Category_Choices,
             attrs={
                 'class':'form-control',
             }

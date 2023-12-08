@@ -3,7 +3,7 @@
 {% block content %}
 
     {% for article in articles %}
-    <div style="display:flex; flex-direction:row; justify-content:space-between; align-items:center;" onclick="location.href='{% url 'articles:detail' article.pk %}';">
+    <div style="display:flex; weight:100%;flex-direction:row; justify-content:space-between; align-items:center; border:1px solid black;" onclick="location.href='{% url 'articles:detail' article.pk %}';">
         <div>
              <p>{{ article.title }}</p>
              <p>{{ article.content}}</p>

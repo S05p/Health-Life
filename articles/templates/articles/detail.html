@@ -6,6 +6,7 @@
   {{ article.title }}
   {{ article.content }}
   {{ article.upload_time }}
+  {{ article.category }}
   {{ article.like_user.all|length }} 명이 이 글을 추천합니다..
   {{ article.unlike_user.all|length }} 명이 이 글을 비추천합니다.
 <form action="{% url 'articles:article_like' article.pk %}" method="POST">

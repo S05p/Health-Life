@@ -5,7 +5,7 @@ from django.db import models
 
 class User(AbstractUser):
     Hobbiy_Choices = [
-        ('big three exercises ', '3대운동'),
+        ('big three exercises', '3대운동'),
         ('cycling', '싸이클'),
         ('bodyWeight_training', '맨몸운동'),
         ('bodybilding', '보디빌딩'),
