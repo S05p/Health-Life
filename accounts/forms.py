@@ -2,18 +2,19 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, AuthenticationForm, UserChangeForm
 from django.forms.widgets import ClearableFileInput
+from .models import *
 
 
 class CustomUserCreationForm(UserCreationForm):
     Hobbiy_Choices = (
-        ('big three exercises ', '3대운동'),
+        ('big_three_exercises', '3대운동'),
         ('cycling', '싸이클'),
         ('bodyWeight_training', '맨몸운동'),
-        ('bodybilding', '보디빌딩'),
+        ('body_bilding', '보디빌딩'),
         ('jogging', '조깅'),
         ('running', '러닝'),
         ('swimming', '수영'),
-        ('WeightTraining', '웨이트트레이닝'),
+        ('Weight_Training', '웨이트트레이닝'),
         ('Yoga', '요가'),
         ('Pilates', '필라테스'),
         ('climbing', '클라이밍'),
@@ -49,13 +50,6 @@ class CustomUserCreationForm(UserCreationForm):
             }
         )
     )
-    hobbies = forms.MultipleChoiceField(
-        label_suffix='',label='',
-        error_messages={'required': '취미를 확인해주세요'},
-        choices=Hobbiy_Choices,
-        required=False,
-        widget=forms.CheckboxSelectMultiple,
-    )
     email = forms.EmailField(
         label_suffix='',label='',
         error_messages={'required': '이메일을 확인해주세요'},
@@ -88,7 +82,7 @@ class CustomUserCreationForm(UserCreationForm):
     )
     class Meta:
         model = get_user_model()
-        fields = ('username','nickname','profile_image','hobbies','email',)
+        fields = ('username','nickname','profile_image','email',)
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(

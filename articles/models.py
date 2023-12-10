@@ -32,5 +32,3 @@ class Comment(models.Model):
     Articles = models.ForeignKey(Articles,on_delete=models.CASCADE,related_name='articles')
     like_user = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='like_comments')
 
-
-

@@ -43,6 +43,7 @@ class ArticlesForm(forms.Form):
         widget=CKEditorWidget(
             attrs={
                 'class':'form-control',
+                'style':'width:100%',
             }
         )
     )
