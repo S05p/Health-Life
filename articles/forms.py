@@ -4,7 +4,7 @@ from django import forms
 from django.forms import ClearableFileInput
 from .models import *
 
-class ArticlesForm(forms.Form):
+class ArticlesForm(forms.ModelForm):
     Category_Choices = [
         ('3대운동','3대운동'),
         ('린매스업', '린매스업'),
@@ -51,12 +51,13 @@ class ArticlesForm(forms.Form):
         model = Articles
         fields = ('title','content','image',)
 
-class CommentForm(forms.Form):
+class CommentForm(forms.ModelForm):
     content = forms.CharField(
         label_suffix='',label='',
         widget=forms.Textarea(
             attrs={
-                'style':'height:150px;'
+                'style':'height:30px;weight:100%;',
+                'class':'form-control'
             }
         )
     )

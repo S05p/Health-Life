@@ -9,7 +9,7 @@ from django.contrib import messages
 def index(request):
     articles = Articles.objects.all().order_by('-pk')
     context = {
-        'articles':articles
+        'articles':articles,
     }
     return render(request,'articles/index.html',context)
 
@@ -38,10 +38,23 @@ def create(request):
     }
     return render(request,'articles/create.html',context)
 
-def detail(request,pk):
-    article = Articles.objects.get(pk=pk)
+def detail(request,article_pk):
+    article = Articles.objects.get(pk=article_pk)
+    comments = Comment.objects.filter(articles__id=article_pk)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.User = request.user
+            comment.articles = Articles.objects.get(pk=article_pk)
+            comment.save()
+            return redirect('articles:detail',article_pk)
+    else:
+        form = CommentForm()
     context = {
         'article': article,
+        'form': form,
+        'comments':comments,
     }
     return render(request,'articles/detail.html',context)
 
