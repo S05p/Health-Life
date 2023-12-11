@@ -11,12 +11,6 @@ class User(AbstractUser):
     invited_Day = models.DateField(auto_now_add=True)
     profile_image = models.ImageField(upload_to='user/images/%Y/%m/%d',blank=True,null=True)
     email = models.EmailField(blank=False,null=False,unique=True)
-    hobbies = models.CharField(blank=True, null=True,max_length=20)
-
-    def set_my_list(self, value):
-        self.hobbies = json.dumps(value)
-    def get_my_list(self):
-        return json.loads(self.hobbies) if self.hobbies else []
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username','nickname',]
