@@ -11,7 +11,22 @@
   {{ article.unlike_user.all|length }} 명이 이 글을 비추천합니다.
 
   {% for comment in comments %}
-    {{ comment.content }}
+    <div>
+        {{ comment.content }}
+        <!-- 대댓글 표시 -->
+        {% for reply in comment.replies.all %}
+            <div style="margin-left: 20px;">
+                {{ reply.content }}
+            </div>
+        {% endfor %}
+        <!-- 대댓글 작성 폼 -->
+        <form method="post" action="{% url 'articles:detail' article.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="parent_comment_id" value="{{ comment.id }}">
+            {{ form.as_p }}
+            <button type="submit">답글 작성</button>
+        </form>
+    </div>
   {% endfor %}
 <form action="{% url 'articles:article_like' article.pk %}" method="POST">
   {% csrf_token %}

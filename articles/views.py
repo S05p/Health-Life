@@ -40,15 +40,19 @@ def create(request):
 
 def detail(request,article_pk):
     article = Articles.objects.get(pk=article_pk)
-    comments = Comment.objects.filter(articles__id=article_pk)
+    comments = Comment.objects.filter(articles__id=article_pk,parent_comment=None)
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.User = request.user
-            comment.articles = Articles.objects.get(pk=article_pk)
-            comment.save()
-            return redirect('articles:detail',article_pk)
+        if request.user.is_authenticated:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                content = form.cleaned_data['content']
+                parent_comment_id = form.cleaned_data['parent_comment_id']
+                if parent_comment_id:
+                    parent_comment = get_object_or_404(Comment,pk=parent_comment_id)
+                    Comment.objects.create(User=request.user,articles=article,content=content,parent_comment=parent_comment)
+                else:
+                    Comment.objects.create(User=request.user, articles=article, content=content)
+                return redirect('articles:detail',article_pk)
     else:
         form = CommentForm()
     context = {

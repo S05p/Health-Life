@@ -35,6 +35,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=1000)
     articles = models.ForeignKey(Articles,on_delete=models.CASCADE,related_name='articles')
     like_user = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='like_comments')
+    parent_comment = models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True,related_name='replies')
 
 
 # 댓글 카운트를 위한 함수
