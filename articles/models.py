@@ -27,6 +27,7 @@ class Articles(models.Model):
     unlike_user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='unlike_articles')
     category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name='category')
     comment_count = models.IntegerField(default=0)
+    popular_article = models.CharField(max_length=20,null=True,blank=True,default=False)
 
 class Comment(models.Model):
     User = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='comment')

@@ -7,7 +7,7 @@ from django.contrib import messages
 # Create your views here.
 
 def index(request):
-    articles = Articles.objects.all().order_by('-pk')
+    articles = Articles.objects.filter(popular_article=True).order_by('-pk')
     context = {
         'articles':articles,
     }
@@ -71,7 +71,10 @@ def article_like(request,article_pk):
         return redirect('articles:detail',article_pk)
     else:
         article.like_user.add(request.user)
-    return redirect('articles:detail', article_pk)
+        if article.like_user.count() >= 10 and article.like_user.count() >= article.unlike_user.count():
+            article.popular_article = True
+            article.save()
+    return redirect('articles:detail',article_pk)
 
 @login_required
 def article_unlike(request,article_pk):
@@ -82,6 +85,8 @@ def article_unlike(request,article_pk):
         return redirect('articles:detail', article_pk)
     else:
         article.unlike_user.add(request.user)
+    if article.popular_article == True and article.like_user.count() <= article.unlike_user.count():
+        article.popular_article = False
     return redirect('articles:detail',article_pk)
 
 def category(request,category_name):
