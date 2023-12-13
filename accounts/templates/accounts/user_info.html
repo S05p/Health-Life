@@ -2,13 +2,13 @@
 
 {% block content %}
 
- <p> {{ user.username }}</p>
+ <p> username : {{ user.username }}</p>
 
- <p> {{ user.nickname }}</p>
+ <p> nickname : {{ user.nickname }}</p>
 
  <p> {{ user.invited_Day}} </p>
 
- <p> {{ user.email }} </p>
+ <p> email : {{ user.email }} </p>
 
 <a href="{% url 'accounts:update' user.pk %}?next={% url 'articles:index' %}">유저 정보 수정</a>
 <a href="{% url 'accounts:password_change' user.pk %}">비밀번호 변경</a>

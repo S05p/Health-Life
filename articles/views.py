@@ -92,7 +92,7 @@ def article_unlike(request,article_pk):
 def category(request,category_name):
     category_name = category_name.replace('-','')
     category = get_object_or_404(Category,name=category_name)
-    articles = Articles.objects.filter(category=category)
+    articles = Articles.objects.filter(category=category).order_by('-pk')
     context = {
         'category':category,
         'articles':articles,
