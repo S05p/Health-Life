@@ -4,12 +4,16 @@ from .forms import *
 from .models import *
 from datetime import datetime
 from django.contrib import messages
+from django.core.paginator import Paginator
 # Create your views here.
 
 def index(request):
     articles = Articles.objects.filter(popular_article=True).order_by('-pk')
+    page = int(request.GET.get('page',1))
+    paginator = Paginator(articles,15)
+    board = paginator.get_page(page)
     context = {
-        'articles':articles,
+        'board':board,
     }
     return render(request,'articles/index.html',context)
 
@@ -93,8 +97,11 @@ def category(request,category_name):
     category_name = category_name.replace('-','')
     category = get_object_or_404(Category,name=category_name)
     articles = Articles.objects.filter(category=category).order_by('-pk')
+    page = int(request.GET.get('page', 1))
+    paginator = Paginator(articles, 10)
+    board = paginator.get_page(page)
     context = {
         'category':category,
-        'articles':articles,
+        'board':board,
     }
     return render(request,'articles/category.html',context)
