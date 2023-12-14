@@ -105,3 +105,43 @@ def category(request,category_name):
         'board':board,
     }
     return render(request,'articles/category.html',context)
+
+@login_required
+def report_view(request,article_pk):
+    if Report.objects.filter(report_article_pk=article_pk, User=request.user).exists():
+        messages.error(request, '이미 신고한 글입니다.')
+        return redirect('articles:detail', article_pk)
+    if request.user == Articles.objects.get(pk=article_pk).User:
+        messages.error(request, '자신의 글은 신고할 수 없습니다')
+        return redirect('articles:detail',article_pk)
+    if request.method == 'POST':
+        form = ReportForm(request.POST,request.FILES)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            reason = form.cleaned_data['reason']
+            article = get_object_or_404(Articles,pk=article_pk)
+            report_title = article.title
+            report_content = article.content
+            report_user_nickname = article.User.nickname
+            report_article_pk = article_pk
+            Report.objects.create(
+                User = request.user,
+                title = title,
+                report_content = report_content,
+                report_user_nickname = report_user_nickname,
+                report_title = report_title,
+                reason = reason,
+                upload_time = datetime.now(),
+                report_article_pk = report_article_pk,
+            )
+            messages.success(request, '신고가 성공적으로 제출되었습니다.')
+            print('2')
+            return redirect('articles:detail',article_pk)
+    else:
+        form = ReportForm()
+    context = {
+        'form':form,
+        'article_pk':article_pk,
+    }
+    return render(request,'articles/report.html',context)
+

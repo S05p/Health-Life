@@ -68,3 +68,24 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('content',)
+
+class ReportForm(forms.ModelForm):
+    title = forms.CharField(
+        label_suffix='', label='',
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        )
+    )
+    reason = forms.CharField(
+        label_suffix='',label='',
+        widget= forms.Textarea(
+            attrs={
+                'class':'form-control',
+            }
+        )
+    )
+    class Meta:
+        model = Report
+        fields = ('title','reason',)

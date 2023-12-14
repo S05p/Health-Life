@@ -3,7 +3,16 @@
 {% block content %}
 
 	{% for article in board %}
-		<p> {{ article.title }}</p>
+	<div style="display:flex; flex-direction:row; justify-content:space-between;" onclick="location.href='{% url 'articles:detail' article.pk %}'">
+		<div>
+			<p> {{ article.title }} </p>
+			<p> {{ article.content }}</p>
+		</div>
+		<div style="display:flex; flex-direction:column; align-items:center;">
+			<p> 추천 </p>
+			<p> {{ article.like_user.count }}</p>
+		</div>
+	</div>
 	{% endfor %}
     <nav aria-label="Page navigation example">
 		<ul class="pagination pagination-sm justify-content-center">

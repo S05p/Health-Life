@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action="{% url 'articles:report_view' article_pk %}" method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+    <input type="submit" style="width:100%" class="btn btn-danger" value="신고하기">
+</form>
+
+<script>
+    document.querySelector('.django-ckeditor-widget').style.width = '100%';
+</script>
+
+{% endblock content %}

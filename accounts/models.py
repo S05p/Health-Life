@@ -4,8 +4,8 @@ import json
 # Create your models here.
 
 class User(AbstractUser):
-    username = models.TextField(blank=False,null=False,unique=False)
-    nickname = models.TextField(blank=False,null=False,unique=True)
+    username = models.CharField(max_length=20,blank=False,null=False,unique=False)
+    nickname = models.TextField(max_length=15,blank=False,null=False,unique=True)
     level = models.IntegerField(default=0)
     # 이름,닉네임,레벨... 말고 또 뭐가 있지
     invited_Day = models.DateField(auto_now_add=True)
