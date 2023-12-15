@@ -21,6 +21,7 @@ def index(request):
 def create(request):
     if request.method == "POST":
         form = ArticlesForm(request.POST,request.FILES)
+        print(1)
         if form.is_valid():
             title = form.cleaned_data['title']
             content = form.cleaned_data['content']
@@ -34,6 +35,7 @@ def create(request):
                 upload_time = upload_time,
                 category = category_instance
             )
+            print(2)
             return redirect('articles:detail',article.pk)
     else:
         form = ArticlesForm()
@@ -71,6 +73,7 @@ def article_like(request,article_pk):
     article = get_object_or_404(Articles,pk=article_pk)
     if article.User == request.user:
         messages.error(request,'자신의 글은 추천 할 수 없습니다')
+        return redirect('articles:detail', article_pk)
     if article.like_user.filter(pk=request.user.pk).exists() or article.unlike_user.filter(pk=request.user.pk).exists():
         return redirect('articles:detail',article_pk)
     else:
@@ -85,6 +88,7 @@ def article_unlike(request,article_pk):
     article = get_object_or_404(Articles,pk=article_pk)
     if article.User == request.user:
         messages.error(request,'자신의 글은 비추천 할 수 없습니다.')
+        return redirect('articles:detail', article_pk)
     if article.like_user.filter(pk=request.user.pk).exists() or article.unlike_user.filter(pk=request.user.pk).exists():
         return redirect('articles:detail', article_pk)
     else:

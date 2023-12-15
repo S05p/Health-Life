@@ -2,15 +2,25 @@
 
 {% block content %}
 
-<form action="{% url 'articles:create' %}" method="POST">
+<form action="{% url 'articles:create' %}" enctype="multipart/form-data" method="POST">
   {% csrf_token %}
   {{ form.as_p }}
-
     <input type="submit" style="width:100%" class="btn btn-primary" value="글 작성">
 </form>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/translations/ko.js"></script>
+    <script>
+      ClassicEditor
+          .create( document.querySelector( '#id_content' ), {
+            language: "ko"
+          } )
+          .catch( error => {
+              console.error( error );
+          } );
+    </script>
+    <script>
+      document.querySelector('.django-ckeditor-widget').style.width = '100%';
 
-<script>
-    document.querySelector('.django-ckeditor-widget').style.width = '100%';
-</script>
+    </script>
 
 {% endblock content %}

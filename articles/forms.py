@@ -29,15 +29,6 @@ class ArticlesForm(forms.ModelForm):
             }
         )
     )
-    image = forms.ImageField(
-        label_suffix='',label='',
-        required=False,
-        widget=ClearableFileInput(
-            attrs={
-                'class': 'form-control',
-            }
-        )
-    )
     content = forms.CharField(
         label_suffix='',label='',
         widget=CKEditorWidget(
@@ -49,7 +40,7 @@ class ArticlesForm(forms.ModelForm):
     )
     class Meta:
         model = Articles
-        fields = ('title','content','image',)
+        fields = ('category','title','content',)
 
 class CommentForm(forms.ModelForm):
     content = forms.CharField(

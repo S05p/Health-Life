@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'articles',
     'bootstrap4',
     'ckeditor',
+    'ckeditor_uploader',
     # allauth
     'django.contrib.admin',
     'django.contrib.auth',

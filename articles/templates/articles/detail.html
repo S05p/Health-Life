@@ -4,7 +4,7 @@
 
   {{ article.User }}
   {{ article.title }}
-  {{ article.content }}
+  {{ article.content|safe }}
   {{ article.upload_time }}
   {{ article.category }}
   {{ article.like_user.count }} 명이 이 글을 추천합니다..
