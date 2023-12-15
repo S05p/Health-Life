@@ -21,7 +21,6 @@ def index(request):
 def create(request):
     if request.method == "POST":
         form = ArticlesForm(request.POST,request.FILES)
-        print(1)
         if form.is_valid():
             title = form.cleaned_data['title']
             content = form.cleaned_data['content']
@@ -35,7 +34,6 @@ def create(request):
                 upload_time = upload_time,
                 category = category_instance
             )
-            print(2)
             return redirect('articles:detail',article.pk)
     else:
         form = ArticlesForm()
