@@ -25,7 +25,9 @@ def create(request):
             title = form.cleaned_data['title']
             content = form.cleaned_data['content']
             upload_time = datetime.now()
-            category = form.cleaned_data['category']
+            category = form.cleaned_data["category"]
+            category = category.replace("'","")
+            category = category.replace('"','')
             category_instance = Category.objects.get(name=category)
             article = Articles.objects.create(
                 User = request.user,
@@ -137,7 +139,6 @@ def report_view(request,article_pk):
                 report_article_pk = report_article_pk,
             )
             messages.success(request, '신고가 성공적으로 제출되었습니다.')
-            print('2')
             return redirect('articles:detail',article_pk)
     else:
         form = ReportForm()

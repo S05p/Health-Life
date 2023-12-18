@@ -33,17 +33,20 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # allauth
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.kakao',
+    # 어플리케이션
     'accounts',
     'articles',
+    'kakaopay',
     'bootstrap4',
+    # ck에디터
     'ckeditor',
     'ckeditor_uploader',
-    # allauth
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

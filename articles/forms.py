@@ -6,16 +6,18 @@ from .models import *
 
 class ArticlesForm(forms.ModelForm):
     Category_Choices = [
-        ('3대운동','3대운동'),
-        ('린매스업', '린매스업'),
-        ('유산소운동', '유산소운동'),
-        ('보디빌딩', '보디빌딩'),
-        ('자유', '자유'),
+        (str('3대운동'),str('3대운동')),
+        (str('린매스업'), str('린매스업')),
+        (str('유산소운동'), str('유산소운동')),
+        (str('보디빌딩'), str('보디빌딩')),
+        (str('자유'), str('자유')),
+        (str('식단'),str('식단')),
     ]
     category = forms.CharField(
         label_suffix='', label='',
         widget=forms.Select(
             choices=Category_Choices,
+
             attrs={
                 'class': 'form-control',
             }
@@ -26,15 +28,6 @@ class ArticlesForm(forms.ModelForm):
         widget= forms.TextInput(
             attrs={
                 'class':'form-control',
-            }
-        )
-    )
-    content = forms.CharField(
-        label_suffix='',label='',
-        widget=CKEditorWidget(
-            attrs={
-                'class':'form-control',
-                'style':'width:100%; height:400px;',
             }
         )
     )

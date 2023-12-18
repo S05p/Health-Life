@@ -29,6 +29,9 @@ class Articles(models.Model):
     comment_count = models.IntegerField(default=0)
     popular_article = models.CharField(max_length=20,null=True,blank=True,default=False)
 
+    def __str__(self):
+        return self.title
+
 class Comment(models.Model):
     User = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='comment')
     upload_time = models.DateTimeField(auto_now_add=True)
