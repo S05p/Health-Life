@@ -7,27 +7,7 @@
   {{ form.as_p }}
     <input type="submit" style="width:100%" class="btn btn-primary" value="글 작성">
 </form>
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/translations/ko.js"></script>
-    <script>
-      ClassicEditor
-          .create( document.querySelector( '#id_content' ), {
-            language: "ko"
-          } )
-          .catch( error => {
-              console.error( error );
-          } );
-          // id_content를 머금은 label을 포함한 p 태그 가져오기
-        var pWithLabelElement = document.querySelector('p label[for="id_content"]').closest('p');
 
-        // p 태그와 하위 레이블 모두 제거
-        if (pWithLabelElement) {
-            pWithLabelElement.parentNode.removeChild(pWithLabelElement);
-        }
-    </script>
-    <script>
-      document.querySelector('.django-ckeditor-widget').style.width = '100%';
-    </script>
 
 
 {% endblock content %}

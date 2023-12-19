@@ -26,8 +26,6 @@ def create(request):
             content = form.cleaned_data['content']
             upload_time = datetime.now()
             category = form.cleaned_data["category"]
-            category = category.replace("'","")
-            category = category.replace('"','')
             category_instance = Category.objects.get(name=category)
             article = Articles.objects.create(
                 User = request.user,

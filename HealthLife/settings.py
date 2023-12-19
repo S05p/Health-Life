@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # ck에디터
     'ckeditor',
     'ckeditor_uploader',
+    # 기존 설치 앱
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

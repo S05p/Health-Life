@@ -5,19 +5,18 @@ from django.forms import ClearableFileInput
 from .models import *
 
 class ArticlesForm(forms.ModelForm):
-    Category_Choices = [
-        (str('3대운동'),str('3대운동')),
-        (str('린매스업'), str('린매스업')),
-        (str('유산소운동'), str('유산소운동')),
-        (str('보디빌딩'), str('보디빌딩')),
-        (str('자유'), str('자유')),
-        (str('식단'),str('식단')),
-    ]
-    category = forms.CharField(
-        label_suffix='', label='',
+    Category_Choices = (
+        ('3대운동','3대운동'),
+        ('린매스업', '린매스업'),
+        ('유산소운동', '유산소운동'),
+        ('보디빌딩', '보디빌딩'),
+        ('자유게시판', '자유게시판'),
+        ('식단','식단'),
+    )
+    category = forms.ChoiceField(
+        label='',
+        choices=Category_Choices,
         widget=forms.Select(
-            choices=Category_Choices,
-
             attrs={
                 'class': 'form-control',
             }
@@ -31,9 +30,27 @@ class ArticlesForm(forms.ModelForm):
             }
         )
     )
+    content = forms.CharField(
+        label_suffix='',label='',
+        widget = forms.Textarea(
+            attrs = {
+                'class':'form-control',
+            }
+        )
+    )
     class Meta:
         model = Articles
         fields = ('category','title','content',)
+
+    def clean_category(self):
+        # category 필드에 대한 추가적인 유효성 검사 수행
+        category = self.cleaned_data.get('category')
+        category = category.replace("'",'')
+        try:
+            category_instance = Category.objects.get(name=category)
+        except Category.DoesNotExist:
+            raise forms.ValidationError("Invalid category")
+        return category_instance
 
 class CommentForm(forms.ModelForm):
     content = forms.CharField(
