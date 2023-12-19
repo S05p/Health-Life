@@ -32,9 +32,8 @@ class ArticlesForm(forms.ModelForm):
     )
     content = forms.CharField(
         label_suffix='',label='',
-        widget = forms.Textarea(
-            attrs = {
-                'class':'form-control',
+        widget=CKEditorWidget(
+            attrs={
             }
         )
     )

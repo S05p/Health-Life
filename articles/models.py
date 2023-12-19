@@ -22,7 +22,7 @@ class Articles(models.Model):
     upload_time = models.DateTimeField(auto_now_add=True)
     revise_time = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=50,default=None)
-    content = models.CharField(max_length=1000,blank=True,null=True)
+    content = RichTextUploadingField(blank=True,null=True)
     like_user = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='like_articles')
     unlike_user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='unlike_articles')
     category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name='category')
