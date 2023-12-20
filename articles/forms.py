@@ -51,6 +51,7 @@ class ArticlesForm(forms.ModelForm):
             raise forms.ValidationError("Invalid category")
         return category_instance
 
+
 class CommentForm(forms.ModelForm):
     content = forms.CharField(
         label_suffix='',label='',

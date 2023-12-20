@@ -1,32 +1,70 @@
-from django.shortcuts import render, redirect
-import requests
+from django.contrib.admin.views.decorators import staff_member_required
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import *
+from .forms import *
 
 # Create your views here.
 
-def index(request):
-    if request.method == "POST":
-        URL = 'https://kapi.kakao.com/v1/payment/ready'
-        headers = {
-            "Authorization": "KakaoAK " + "398f8adf410adf67c806e42a4b92ccd6",   # 변경불가
-            "Content-type": "application/x-www-form-urlencoded;charset=utf-8",  # 변경불가
-        }
-        params = {
-            "cid": "TC0ONETIME",    # 테스트용 코드
-            "partner_order_id": "1001",     # 주문번호
-            "partner_user_id": "german",    # 유저 아이디
-            "item_name": "연어초밥",        # 구매 물품 이름
-            "quantity": "1",                # 구매 물품 수량
-            "total_amount": "12000",        # 구매 물품 가격
-            "tax_free_amount": "0",         # 구매 물품 비과세
-            "approval_url": "결제 성공 시 이동할 url",
-            "cancel_url": "결제 취소 시 이동할 url",
-            "fail_url": "결제 실패 시 이동할 url",
-        }
+# admin key = 398f8adf410adf67c806e42a4b92ccd6
 
-        res = request.post(URL, headers=headers, params=params)
-        requests.session['tid'] = res.json()['tid']      # 결제 승인시 사용할 tid를 세션에 저장
-        next_url = res.json()['next_redirect_pc_url']   # 결제 페이지로 넘어갈 url을 저장
-        return redirect(next_url)
+@staff_member_required
+def goods_registration(request):
+    if request.method == 'POST':
+        form = Goods_Form(request.POST,request.FILES)
+        if form.is_valid():
+            goods_name = form.cleaned_data['goods_name']
+            goods_introduction = form.cleaned_data['goods_introduction']
+            stock = form.cleaned_data['stock']
+            price = form.cleaned_data['price']
+            Goods.objects.create(
+                goods_name = goods_name,
+                goods_introduction = goods_introduction,
+                stock = stock,
+                price = price,
+            )
+            return redirect('kakaopay:goods_detail')
+    else:
+        form = Goods_Form()
+    context = {
+        'form':form,
+    }
+    return render(request,'kakaopay/goods_registration.html',context)
+
+def goods_detail(request,goods_pk):
+    goods = get_object_or_404(Goods,pk=goods_pk)
+    context = {
+        'goods':goods,
+    }
+    return render(request,'kakaopay/goods_detail.html',context)
+
+@staff_member_required
+def goods_update(request,goods_pk):
+    goods = get_object_or_404(Goods,pk=goods_pk)
+    if request.method == 'POST':
+        form = Goods_Form(request.POST,request.FILES,instance=goods)
+        if form.is_valid():
+            goods_name = form.cleaned_data['goods_name']
+            goods_introduction = form.cleaned_data['goods_introduction']
+            stock = form.cleaned_data['stock']
+            price = form.cleaned_data['price']
+            goods.goods_name = goods_name
+            goods.goods_introduction = goods_introduction
+            goods.stock = stock
+            goods.price = price
+            goods.save()
+            return redirect('kakaopay:detail')
+    else:
+        form = Goods_Form(instance=goods)
+    context = {
+        'goods_pk':goods_pk,
+        'form':form,
+    }
+    return render(request,'kakaopay/goods_correction.html',context)
 
 
-    return render(request, 'kakaopay/index.html')
+# goods_name = models.CharField(max_length=1000, null=False, blank=False)
+# goods_introduction = RichTextUploadingField(blank=True, null=True)
+# goods_code = models.PositiveIntegerField(primary_key=True, auto_created=True)
+# stock = models.IntegerField()
+# price = models.PositiveIntegerField()

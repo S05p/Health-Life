@@ -67,6 +67,37 @@ def detail(request,article_pk):
     return render(request,'articles/detail.html',context)
 
 @login_required
+def delete(request,article_pk):
+    article = get_object_or_404(Articles,pk=article_pk)
+    if request.user == article.User:
+        article.delete()
+        return redirect('articles:index')
+
+@login_required
+def update(request,article_pk):
+    article = get_object_or_404(Articles,pk=article_pk)
+    if request.method == 'POST':
+        form = ArticlesForm(request.POST,request.FILES,instance=article)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            content = form.cleaned_data['content']
+            revise_time = datetime.now()
+            category = form.cleaned_data["category"]
+            category_instance = Category.objects.get(name=category)
+            article.title = title
+            article.content = content
+            article.revise_time = revise_time
+            article.category = category_instance
+            article.save()
+            return redirect('articles:detail',article_pk)
+    else:
+        form = ArticlesForm(instance=article)
+    context = {
+        'form':form,
+        'article_pk':article_pk,
+    }
+    return render(request,'articles/update.html',context)
+@login_required
 def article_like(request,article_pk):
     article = get_object_or_404(Articles,pk=article_pk)
     if article.User == request.user:
