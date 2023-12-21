@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {{ goods.goods_name }}
+    {{ goods.goods_introduction|safe }}
+    {{ goods.price }}
+
+{% endblock content %}

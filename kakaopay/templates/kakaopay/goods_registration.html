@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<form action="{% url 'kakaopay:goods_registration' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" style="width:100%" class="btn btn-primary" value="등록">
+</form>
+
+<script>
+  // 문서가 완전히 로드된 후 실행
+  document.addEventListener('DOMContentLoaded', function() {
+    // 요소를 찾아서 required 속성을 삭제
+    var contentTextarea = document.getElementById('id_goods_introduction');
+    if (contentTextarea) {
+      contentTextarea.removeAttribute('required');
+    }
+  });
+  ClassicEditor
+      .create( document.querySelector( '#id_goods_introduction' ) )
+      .catch( error => {
+          console.error( error );
+      } );
+    // JavaScript 코드
+    var elements = document.getElementsByClassName("django-ckeditor-widget");
+
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].style.cssText = ""; // style 속성을 비워서 스타일을 제거
+}
+
+
+</script>
+{% endblock content %}

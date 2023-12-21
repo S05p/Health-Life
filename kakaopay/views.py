@@ -1,12 +1,17 @@
+from django.apps import apps
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from .forms import *
+from django.conf import settings
 
 # Create your views here.
 
 # admin key = 398f8adf410adf67c806e42a4b92ccd6
+
+Category = apps.get_model(settings.CATEGORY_MODEL)
 
 @staff_member_required
 def goods_registration(request):
@@ -17,13 +22,16 @@ def goods_registration(request):
             goods_introduction = form.cleaned_data['goods_introduction']
             stock = form.cleaned_data['stock']
             price = form.cleaned_data['price']
-            Goods.objects.create(
+            category = '팝업스토어'
+            category_instance = Category.objects.get(name=category)
+            goods = Goods.objects.create(
                 goods_name = goods_name,
                 goods_introduction = goods_introduction,
                 stock = stock,
                 price = price,
+                category = category_instance,
             )
-            return redirect('kakaopay:goods_detail')
+            return redirect('kakaopay:goods_detail',goods.pk)
     else:
         form = Goods_Form()
     context = {
@@ -62,9 +70,10 @@ def goods_update(request,goods_pk):
     }
     return render(request,'kakaopay/goods_correction.html',context)
 
+@staff_member_required
+def goods_delete(request,goods_pk):
+    goods = get_object_or_404(Goods,goods_pk)
+    goods.delete()
+    return redirect('articles:index')
 
-# goods_name = models.CharField(max_length=1000, null=False, blank=False)
-# goods_introduction = RichTextUploadingField(blank=True, null=True)
-# goods_code = models.PositiveIntegerField(primary_key=True, auto_created=True)
-# stock = models.IntegerField()
-# price = models.PositiveIntegerField()
+

@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
@@ -5,7 +6,11 @@ from .models import *
 from datetime import datetime
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.conf import settings
+
 # Create your views here.
+
+Goods = apps.get_model(settings.GOODS_MODEL)
 
 def index(request):
     articles = Articles.objects.filter(popular_article=True).order_by('-pk')
@@ -129,13 +134,20 @@ def article_unlike(request,article_pk):
 def category(request,category_name):
     category_name = category_name.replace('-','')
     category = get_object_or_404(Category,name=category_name)
-    articles = Articles.objects.filter(category=category).order_by('-pk')
-    page = int(request.GET.get('page', 1))
-    paginator = Paginator(articles, 10)
-    board = paginator.get_page(page)
+    if category_name == '팝업스토어':
+        goods = Goods.objects.all().order_by('-pk')
+        page = int(request.GET.get('page', 1))
+        paginator = Paginator(goods, 10)
+        board = paginator.get_page(page)
+    else:
+        articles = Articles.objects.filter(category=category).order_by('-pk')
+        page = int(request.GET.get('page', 1))
+        paginator = Paginator(articles, 10)
+        board = paginator.get_page(page)
     context = {
         'category':category,
         'board':board,
+        'category_name':category_name,
     }
     return render(request,'articles/category.html',context)
 
