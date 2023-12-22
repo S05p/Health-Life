@@ -3,7 +3,7 @@
 {% block content %}
 	{% if category_name == '팝업스토어' %}
 		{% for goods in board %}
-		<div style="display:flex; flex-direction:row; justify-content:space-between;" onclick="location.href='{% url 'kakaopay:goods_detail' goods.pk %}'">
+		<div class="border-bottom border-secondary-subtle" style="display:flex; flex-direction:row; justify-content:space-between;" onclick="location.href='{% url 'kakaopay:goods_detail' goods.pk %}'">
 			<div>
 				<p> {{ goods.goods_name }} </p>
 				<p> {{ goods.price }}</p>
@@ -28,12 +28,12 @@
 
 	{% else %}
 		{% for article in board %}
-		<div style="display:flex; flex-direction:row; justify-content:space-between;" onclick="location.href='{% url 'articles:detail' article.pk %}'">
+		<div class="border-bottom border-secondary-subtle" style="display:flex; flex-direction:row; justify-content:space-between;" onclick="location.href='{% url 'articles:detail' article.pk %}'">
 			<div>
 				<p> {{ article.title }} </p>
-				<p> {{ article.content|safe }}</p>
+				<p> {{ article.content|slice:":60"|striptags|safe }}</p>
 			</div>
-			<div style="display:flex; flex-direction:column; align-items:center;">
+			<div class="recommendation-info">
 				<p> 추천 </p>
 				<p> {{ article.like_user.count }}</p>
 			</div>
@@ -55,4 +55,32 @@
 			</ul>
 		</nav>
 	{% endif %}
+
+<style>
+	.recommendation-info {
+		display:flex;
+		flex-direction:column;
+		align-items:center;
+	}
+</style>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		// 페이지가 로드된 후 실행될 코드
+	var contentDivs = document.querySelectorAll('.content_class');
+
+	contentDivs.forEach(function(contentDiv) {
+			// img 태그 삭제
+		contentDiv.innerHTML = contentDiv.innerHTML.replace(/<img\b[^>]*>/gi, '사진');
+		});
+	});
+	document.addEventListener("DOMContentLoaded", function() {
+        // 페이지가 로드된 후 실행될 코드
+        var emptyPTags = document.querySelectorAll('p:empty');
+
+        emptyPTags.forEach(function(emptyPTag) {
+            emptyPTag.parentNode.removeChild(emptyPTag);
+        });
+    });
+</script>
 {% endblock content %}
