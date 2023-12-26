@@ -7,6 +7,7 @@ from datetime import datetime
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.conf import settings
+from django.db.models import Q
 
 # Create your views here.
 
@@ -188,4 +189,50 @@ def report_view(request,article_pk):
         'article_pk':article_pk,
     }
     return render(request,'articles/report.html',context)
+
+def category_search(request,category_name):
+    if request.method == 'POST':
+        category_name = category_name
+        searched = request.POST['searched']
+        select = request.POST.get('select',1)
+        if category_name == '팝업스토어':
+            if select == 1:
+                articles = Goods.objects.filter(
+                    Q(goods_name__contains=searched)|
+                    Q(goods_introducion__contains=searched)
+                ).order_by('-pk')
+            elif select == 2:
+                articles = Goods.objects.filter(
+                    Q(goods_name__contains=searched)
+                ).order_by('-pk')
+            else:
+                articles = Goods.objects.filter(
+                    Q(goods_introduction__contains=searched)
+                ).order_by('-pk')
+        else:
+            category_name = Category.objects.get(name=category_name)
+            if select == 1:
+                articles = Articles.objects.filter(
+                    Q(title__contains=searched)|
+                    Q(content__contains=searched),
+                    Q(category=category_name)
+                ).order_by('-pk')
+            elif select == 2:
+                articles = Articles.objects.filter(
+                    Q(title__contains=searched) ,
+                    Q(category=category_name)
+                ).order_by('-pk')
+            elif select == 3:
+                articles = Articles.objects.filter(
+                    Q(content__contains=searched) ,
+                    Q(category=category_name)
+                ).order_by('-pk')
+            else:
+                articles = Articles.objects.filter(
+                    Q(User__nickname__contains=searched) ,
+                    Q(category=category_name)
+                ).order_by('-pk')
+        return render(request,'articles/search.html',{'articles':articles,'category_name':category_name})
+    else:
+        return render(request,'articles/search.html')
 

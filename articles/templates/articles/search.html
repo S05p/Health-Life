@@ -1,32 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	{% if category_name == '팝업스토어' %}
-		{% for goods in board %}
-		<div class="border-bottom border-secondary-subtle" style="display:flex; flex-direction:row; justify-content:space-between;" onclick="location.href='{% url 'kakaopay:goods_detail' goods.pk %}'">
-			<div>
-				<p> {{ goods.goods_name }} </p>
-				<p> {{ goods.price }}</p>
-			</div>
-		</div>
-		{% endfor %}
-		<nav aria-label="Page navigation example">
-			<ul class="pagination pagination-sm justify-content-center">
-				{% if board.has_previous %}
-					<li class="page-item"><a class="page-link" href="?page={{board.previous_page_number}}" tabindex="-1">이전</a></li>
-				{% endif %}
-
-				{% for p in board.paginator.page_range %}
-					<li class="page-item"><a class="page-link" href="?page={{p}}" class="mx-1">{{p}}</a></li>
-				{% endfor %}
-
-				{% if board.has_next %}
-					<li class="page-item"><a class="page-link" href="?page={{board.next_page_number}}">다음</a></li>
-				{% endif %}
-			</ul>
-		</nav>
-	{% else %}
-		{% for article in board %}
+		{% for article in articles %}
 		<div class="border-bottom border-secondary-subtle" style="display:flex; flex-direction:row; justify-content:space-between;" onclick="location.href='{% url 'articles:detail' article.pk %}'">
 			<div>
 				<p> {{ article.title }} </p>
@@ -53,7 +28,6 @@
 				{% endif %}
 			</ul>
 		</nav>
-	{% endif %}
 	<form class="form-inline justify-content-center" method="POST" action="{% url 'articles:category_search' category_name=category_name %}">
 	  {% csrf_token %}
 	  <div class="row">
@@ -61,14 +35,15 @@
 		</div>
 	    <div class="col-2">
 			{% if category_name == '팝업스토어' %}
-			<select class="form-select w-100" name="select">
+			<select class="form-select w-100" name="category">
 				<option value="1">상품명+내용</option>
 				<option value="2">상품명</option>
 				<option value="3">내용</option>
+				<option value="4">유저이름</option>
 				<!-- 필요한 만큼 옵션을 추가할 수 있습니다. -->
       		</select>
 			{% else %}
-			<select class="form-select w-100" name="select">
+			<select class="form-select w-100" name="category">
 				<option value="1">제목+내용</option>
 				<option value="2">제목</option>
 				<option value="3">내용</option>

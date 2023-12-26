@@ -12,4 +12,5 @@ urlpatterns = [
     path('category/<str:category_name>',views.category,name='category'),
     path('detail/<int:article_pk>/delete',views.delete,name='delete'),
     path('detail/<int:article_pk>/update',views.update,name='update'),
+    path('category/<str:category_name>/search/',views.category_search,name='category_search'),
 ]
