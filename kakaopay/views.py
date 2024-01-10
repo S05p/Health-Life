@@ -9,8 +9,6 @@ from django.conf import settings
 
 # Create your views here.
 
-# admin key = 398f8adf410adf67c806e42a4b92ccd6
-
 Category = apps.get_model(settings.CATEGORY_MODEL)
 
 @staff_member_required
