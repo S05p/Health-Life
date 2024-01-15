@@ -2,7 +2,7 @@ from django.contrib.auth import login as auth_login, logout as auth_logout, auth
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CustomUserCreationForm, CustomUserChangeForm, CustomAuthenticationForm, CustomPasswordChangeForm
-from .models import User
+from .models import *
 from django.contrib import messages
 # Create your views here.
 
@@ -13,7 +13,15 @@ def join(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST,request.FILES)
         if form.is_valid():
+            hobby1 = form.cleaned_data['hobby1']
+            hobby2 = form.cleaned_data['hobby2']
+            hobby3 = form.cleaned_data['hobby3']
+            hobby1 = Hobby.objects.get(name=hobby1)
+            hobby2 = Hobby.objects.get(name=hobby2)
+            hobby3 = Hobby.objects.get(name=hobby3)
             user = form.save()
+            user.hobbies.add(hobby1,hobby2,hobby3)
+            user.save()
             auth_login(request,user,backend='django.contrib.auth.backends.ModelBackend')
             return redirect('articles:index')
     else:
@@ -26,8 +34,14 @@ def join(request):
 @login_required
 def user_info(request,pk):
     user = get_object_or_404(User,pk=pk)
+    hobbies_of_user0 = user.hobbies.all()[0]
+    hobbies_of_user1 = user.hobbies.all()[1]
+    hobbies_of_user2 = user.hobbies.all()[2]
     context = {
         'user': user,
+        'hobbies_of_user0': hobbies_of_user0,
+        'hobbies_of_user1': hobbies_of_user1,
+        'hobbies_of_user2': hobbies_of_user2,
     }
     if request.user == user:
         return render(request, 'accounts/user_info.html', context)

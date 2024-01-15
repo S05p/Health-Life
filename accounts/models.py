@@ -3,6 +3,14 @@ from django.db import models
 import json
 # Create your models here.
 
+
+class Hobby(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name_plural = 'Hobbies'
 class User(AbstractUser):
     username = models.CharField(max_length=20,blank=False,null=False,unique=False)
     nickname = models.TextField(max_length=15,blank=False,null=False,unique=True)
@@ -11,8 +19,10 @@ class User(AbstractUser):
     invited_Day = models.DateField(auto_now_add=True)
     profile_image = models.ImageField(upload_to='user/images/%Y/%m/%d',blank=True,null=True)
     email = models.EmailField(blank=False,null=False,unique=True)
+    hobbies = models.ManyToManyField(Hobby,related_name='hobbies')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username','nickname',]
     def __str__(self):
         return self.nickname
+

@@ -6,20 +6,6 @@ from .models import *
 
 
 class CustomUserCreationForm(UserCreationForm):
-    Hobbiy_Choices = (
-        ('big_three_exercises', '3대운동'),
-        ('cycling', '싸이클'),
-        ('bodyWeight_training', '맨몸운동'),
-        ('body_bilding', '보디빌딩'),
-        ('jogging', '조깅'),
-        ('running', '러닝'),
-        ('swimming', '수영'),
-        ('Weight_Training', '웨이트트레이닝'),
-        ('Yoga', '요가'),
-        ('Pilates', '필라테스'),
-        ('climbing', '클라이밍'),
-        ('tennis', '테니스'),
-    )
     username = forms.CharField(
         label_suffix='',label='',
         error_messages={'required': '사용자 이름을 확인해주세요'},
@@ -77,6 +63,30 @@ class CustomUserCreationForm(UserCreationForm):
             attrs={
                 'class': 'form-control',
                 'placeholder': '비밀번호 재확인',
+            }
+        )
+    )
+    hobby1 = forms.CharField(
+        label_suffix='',label='',
+        required=True,
+        widget = forms.HiddenInput(
+            attrs={
+            }
+        )
+    )
+    hobby2 = forms.CharField(
+        label_suffix='', label='',
+        required=False,
+        widget=forms.HiddenInput(
+            attrs={
+            }
+        )
+    )
+    hobby3 = forms.CharField(
+        label_suffix='', label='',
+        required=False,
+        widget=forms.HiddenInput(
+            attrs={
             }
         )
     )
